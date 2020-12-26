@@ -10,7 +10,7 @@ Install the dependencies with:
 pip install --user -r requeriments.txt
 ```
 
-Also, as of 2020-12-26, *backtrader* has problems with the latest *matplotlib* (3.3.3) if you want to plot from *backtrader*. In my case, it worked installing an older *matplotlib* with:
+Also, as of 2020-12-26, *backtrader* 1.9.76.123 has problems with the latest *matplotlib* (3.3.3) if you want to plot from *backtrader*. In my case, it worked installing an older *matplotlib* with:
 
 ```
 pip uninstall matplotlib
