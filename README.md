@@ -5,9 +5,9 @@ This repo was created in order to contain what I'm coding to learn how to do bac
 - [backtrader](https://github.com/mementum/backtrader)
 
 As of 2020-12-26:
-    - *pyalgotrade* looks dead (last commit in 2018), the other two look active.
-    - *backtrader* got some (not many) commits in 2020
-    - For *zipline* take a [look here](zipline/README.md)
+- *pyalgotrade* looks dead (last commit in 2018), the other two look active.
+- For *zipline* take a [look here](zipline/README.md)
+- *backtrader* got some (not many) commits in 2020
 
 The investing strategy is always the same, just a [moving average](https://www.investopedia.com/articles/active-trading/052013/how-use-moving-average-buy-stocks.asp).
 
