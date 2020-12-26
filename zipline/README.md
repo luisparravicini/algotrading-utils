@@ -4,4 +4,4 @@
 
 According to this: https://github.com/quantopian/zipline/issues/2616 Quantopian merged with RonbinHood and I don't know whether zipline will continue to be developed or not.
 
-For the reasons stated above I won't back up from trying *zipline*.
+For the reasons stated above I won't continue to try to install and develop the MA strategy with it.
