@@ -10,14 +10,14 @@ Install the dependencies with:
 pip install --user -r requeriments.txt
 ```
 
-Also, as of 2020-12-26, *backtrader* 1.9.76.123 has problems with the latest *matplotlib* (3.3.3) if you want to plot from *backtrader*. In my case, it worked installing an older *matplotlib* with:
+As of 2020-12-26, *backtrader* 1.9.76.123 has problems with the latest *matplotlib* (3.3.3) if you want to plot from *backtrader*. In my case, it worked installing an older version:
 
 ```
 pip uninstall matplotlib
 pip install matplotlib==3.2.2
 ```
 
-Also, you'll need *tkinter* for *matplotlib*, in Debian/Ubuntu systems install it with:
+You'll also need *tkinter* (used by *matplotlib*), in Debian/Ubuntu systems install it with:
 
 ```
 sudo apt-get install python3-tk
