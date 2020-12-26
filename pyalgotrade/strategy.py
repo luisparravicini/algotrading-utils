@@ -15,7 +15,7 @@ def run_strategy(fast_ma_time, slow_ma_time,
     feed = csvfeed.GenericBarFeed(frequency=frequency)
     feed.addBarsFromCSV(instrument, "sampledata.csv")
 
-    initial_cash = 10000
+    initial_cash = 100000
     strategy = MAStrategy(feed, instrument, initial_cash,
                              fast_ma_time, slow_ma_time,
                              take_profit_price, stop_price)
@@ -25,12 +25,10 @@ def run_strategy(fast_ma_time, slow_ma_time,
     tradesAnalyzer = trades.Trades()
     strategy.attachAnalyzer(tradesAnalyzer)
 
-
     plt = plotter.StrategyPlotter(strategy)
     plt.getOrCreateSubplot("MA").addDataSeries(f'{fast_ma_time} MA', strategy.getFastSMA())
     plt.getOrCreateSubplot("MA").addDataSeries(f'{slow_ma_time} MA', strategy.getSlowSMA())
 
-    # Plot the simple returns on each bar.
     plt.getOrCreateSubplot("returns").addDataSeries("Simple returns", returnsAnalyzer.getReturns())
 
     strategy.info(f'Initial portfolio value: ${initial_cash:.2f}')
