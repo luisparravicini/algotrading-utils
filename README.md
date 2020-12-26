@@ -12,5 +12,5 @@ Each implementation is inside the directories with the same name as the library 
 
 - [pyalgotrade implementation](pyalgotrade/README.md)
 - zipline
-- backtrader
+- [backtrader implementation](backtrader/README.md)
 
