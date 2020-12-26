@@ -1,6 +1,6 @@
 # pyalgotrade
 
-The code is based on [https://github.com/8ball030/ftx_competition_entry](ftx_competition_entry) and (https://github.com/andreHashimoto/trading-strategy-backtest)[trading-strategy-backtest].
+The code is based on [https://github.com/8ball030/ftx_competition_entry](ftx_competition_entry) and [https://github.com/andreHashimoto/trading-strategy-backtest](trading-strategy-backtest).
 
 
 ## Requeriments
