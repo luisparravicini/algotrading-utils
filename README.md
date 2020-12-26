@@ -5,7 +5,7 @@ This repo was created in order to contain what I'm coding to learn how to do bac
 - [backtrader](https://github.com/mementum/backtrader)
 
 As of 2020-12-26:
-- *pyalgotrade* looks dead (last commit in 2018), the other two look active.
+- *pyalgotrade* looks dead (last commit in 2018)
 - For *zipline* take a [look here](zipline/README.md)
 - *backtrader* got some (not many) commits in 2020
 
