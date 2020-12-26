@@ -11,6 +11,6 @@ The investing strategy is always the same, just a [moving average](https://www.i
 Each implementation is inside the directories with the same name as the library used:
 
 - [pyalgotrade implementation](pyalgotrade/README.md)
-- zipline
+- [zipline implementation](zipline/README.md)
 - [backtrader implementation](backtrader/README.md)
 
