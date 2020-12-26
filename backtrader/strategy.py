@@ -18,14 +18,18 @@ if __name__ == '__main__':
     data = bt.feeds.PandasData(dataname=dataframe)
 
     cerebro = bt.Cerebro()
-    cerebro.broker.setcash(100000)
+    initial_cash = 100000
+    cerebro.broker.setcash(initial_cash)
     cerebro.addstrategy(SMACross)
     cerebro.adddata(data)
 
-    print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+    print('Initial portfolio value: %.2f' % cerebro.broker.getvalue())
 
     cerebro.run()
 
-    print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
+    result = cerebro.broker.getvalue()
+    print('Final portfolio value: %.2f' % result)
+    profit = result / float(initial_cash)
+    print(f'profit: {profit:.3f}%')
 
     cerebro.plot()

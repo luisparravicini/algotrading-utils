@@ -23,7 +23,7 @@ Also, you'll need *tkinter* for *matplotlib*, in Debian/Ubuntu systems install i
 sudo apt-get install python3-tk
 ```
 
-The data needed to test the strategy can be downloaded with `data_gather.py`. It will try to download a whole day of data in 1 minute intervals. Sometimes depending on the exchage, the data returned will be less than one day.
+I use the same data collected by the *pyalgotrade* example. Check out the [README](../pyalgotrade/README.md) on how to run it.
 
 ## Backesting
 
@@ -34,16 +34,3 @@ python strategy.py
 ```
 
 After it runs it will print the returns and open a *matplotlib* graph.
-
-
-## Optimisation
-
-To optimise the strategy, run:
-
-
-```
-python3 optimiser.py
-
-```
-
-What it basically does is: you give *pylagotrade* lists of different options for configuring the strategy and it tests them all, printing the best combinations found.
