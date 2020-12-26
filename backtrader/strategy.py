@@ -4,8 +4,8 @@ import pandas as pd
 
 class SMACross(bt.SignalStrategy):
     def __init__(self):
-        sma_short = bt.ind.SMA(period=10)
-        sma_long = bt.ind.SMA(period=20)
+        sma_short = bt.ind.SMA(period=5)
+        sma_long = bt.ind.SMA(period=60)
         crossover = bt.ind.CrossOver(sma_short, sma_long)
         self.signal_add(bt.SIGNAL_LONG, crossover)
 
