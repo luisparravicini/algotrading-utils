@@ -16,7 +16,11 @@ def to_ohlcv(data_file):
         agg_data.append((
             group['date'].min() - group['date'].min() % 60,
             group['price'].mean(),
+            group['price'].mean(),
+            group['price'].mean(),
+            group['price'].mean(),
             group['volume'].mean()
         ))
 
-    return pd.DataFrame(agg_data, columns=list(df.columns))
+    columns = ['date', 'open', 'high', 'low', 'close', 'volume']
+    return pd.DataFrame(agg_data, columns=columns)
