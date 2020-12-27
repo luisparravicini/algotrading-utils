@@ -2,12 +2,12 @@ from datetime import datetime
 import pandas as pd
 
 
-def to_ohlcv(fd_in, fd_out):
+def to_ohlcv(data_file):
     # minutes
     interval = 1
 
     # dparser = lambda x: datetime.fromtimestamp(int(x))
-    df = pd.read_csv(fd_in, names=['date','price','volume'])
+    df = pd.read_csv(data_file, names=['date','price','volume'])
                     # parse_dates=[0], date_parser=dparser)
 
     agg_data = list()
