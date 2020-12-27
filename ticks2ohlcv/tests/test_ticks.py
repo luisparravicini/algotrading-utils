@@ -20,7 +20,7 @@ def assert_result(data_fname, result):
     output = result.to_csv(index=False)
     assert expected.split("\n") == output.split("\n")
 
-def test_smoke_screen():
+def test_1m_reset_seconds():
     data_fname = 'data_001'
     result = ticks.to_ohlcv(data_path(data_fname))
     
