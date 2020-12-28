@@ -12,13 +12,12 @@ def to_ohlcv(data_file):
 
     agg_data = list()
     for _name, group in df.groupby(df['date'] // 60):
-        print(group)
         agg_data.append((
             group['date'].min() - group['date'].min() % 60,
-            group['price'].max(),
+            group['price'].iloc[0],
             group['price'].max(),
             group['price'].min(),
-            group['price'].max(),
+            group['price'].iloc[-1],
             group['volume'].mean()
         ))
 

@@ -24,7 +24,7 @@ def assert_conversion(data_fname):
     result = ticks.to_ohlcv(data_path(data_fname))    
     assert_result(data_fname, result)
 
-def test_1m_reset_seconds():
+def test_reset_seconds():
     assert_conversion('data_001')
 
 def test_min():
@@ -32,3 +32,12 @@ def test_min():
 
 def test_rows_in_an_interval_are_collapsed():
     assert_conversion('data_003')
+
+def test_max():
+    assert_conversion('data_004')
+
+def test_open():
+    assert_conversion('data_005')
+
+def test_close():
+    assert_conversion('data_006')
