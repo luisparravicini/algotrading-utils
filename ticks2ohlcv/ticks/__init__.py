@@ -18,7 +18,7 @@ def to_ohlcv(data_file, interval):
             group['price'].max(),
             group['price'].min(),
             group['price'].iloc[-1],
-            group['volume'].mean()
+            group['volume'].sum()
         ))
 
     columns = ['date', 'open', 'high', 'low', 'close', 'volume']

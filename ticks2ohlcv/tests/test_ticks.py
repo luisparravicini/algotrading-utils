@@ -44,3 +44,6 @@ def test_close():
 
 def test_5m_interval():
     assert_conversion('data_007', interval=5)
+
+def test_volume():
+    assert_conversion('data_008')
