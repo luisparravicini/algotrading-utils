@@ -20,8 +20,8 @@ def assert_result(data_fname, result):
     output = result.to_csv(index=False, float_format='%.4f')
     assert expected.split("\n") == output.split("\n")
 
-def assert_conversion(data_fname):
-    result = ticks.to_ohlcv(data_path(data_fname))    
+def assert_conversion(data_fname, interval=1):
+    result = ticks.to_ohlcv(data_path(data_fname), interval)
     assert_result(data_fname, result)
 
 def test_reset_seconds():
@@ -41,3 +41,6 @@ def test_open():
 
 def test_close():
     assert_conversion('data_006')
+
+def test_5m_interval():
+    assert_conversion('data_007', interval=5)

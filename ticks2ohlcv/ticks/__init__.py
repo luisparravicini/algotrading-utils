@@ -2,18 +2,18 @@ from datetime import datetime
 import pandas as pd
 
 
-def to_ohlcv(data_file):
-    # minutes
-    interval = 1
+def to_ohlcv(data_file, interval):
+    interval *= 60
 
     # dparser = lambda x: datetime.fromtimestamp(int(x))
     df = pd.read_csv(data_file, names=['date','price','volume'])
                     # parse_dates=[0], date_parser=dparser)
 
     agg_data = list()
-    for _name, group in df.groupby(df['date'] // 60):
+    for _name, group in df.groupby(df['date'] // interval):
+        min_date = group['date'].min()
         agg_data.append((
-            group['date'].min() - group['date'].min() % 60,
+            min_date - min_date % interval,
             group['price'].iloc[0],
             group['price'].max(),
             group['price'].min(),
