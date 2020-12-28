@@ -20,20 +20,15 @@ def assert_result(data_fname, result):
     output = result.to_csv(index=False, float_format='%.4f')
     assert expected.split("\n") == output.split("\n")
 
-def test_1m_reset_seconds():
-    data_fname = 'data_001'
-    result = ticks.to_ohlcv(data_path(data_fname))
-    
+def assert_conversion(data_fname):
+    result = ticks.to_ohlcv(data_path(data_fname))    
     assert_result(data_fname, result)
 
-def test_rows_in_an_interval_are_collapsed():
-    data_fname = 'data_003'
-    result = ticks.to_ohlcv(data_path(data_fname))
-    
-    assert_result(data_fname, result)
+def test_1m_reset_seconds():
+    assert_conversion('data_001')
 
 def test_min():
-    data_fname = 'data_002'
-    result = ticks.to_ohlcv(data_path(data_fname))
-    
-    assert_result(data_fname, result)
+    assert_conversion('data_002')
+
+def test_rows_in_an_interval_are_collapsed():
+    assert_conversion('data_003')
