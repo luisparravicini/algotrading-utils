@@ -13,16 +13,19 @@ def data_path(fname):
 def data_expected_path(fname):
     return build_path('expected', fname)
 
-def assert_result(data_fname, result):
+def assert_result(data_fname, ohlcv_df):
     with open(data_expected_path(data_fname), 'r') as file:
         expected = file.read()
 
-    output = result.to_csv(index=False, float_format='%.4f')
+    csv_stream = io.StringIO()
+    ticks.export_dataframe(csv_stream, ohlcv_df)
+    output = csv_stream.getvalue()
+
     assert expected.split("\n") == output.split("\n")
 
 def assert_conversion(data_fname, interval=1):
-    result = ticks.to_ohlcv(data_path(data_fname), interval)
-    assert_result(data_fname, result)
+    ohlcv_df = ticks.to_ohlcv(data_path(data_fname), interval)
+    assert_result(data_fname, ohlcv_df)
 
 def test_reset_seconds():
     assert_conversion('data_001')

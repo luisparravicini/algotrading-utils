@@ -1,7 +1,6 @@
 from datetime import datetime
 import pandas as pd
 
-
 def to_ohlcv(data_file, interval):
     interval *= 60
 
@@ -23,3 +22,6 @@ def to_ohlcv(data_file, interval):
 
     columns = ['date', 'open', 'high', 'low', 'close', 'volume']
     return pd.DataFrame(agg_data, columns=columns)
+
+def export_dataframe(file, data_frame):
+    data_frame.to_csv(file, index=False, float_format='%.4f')
