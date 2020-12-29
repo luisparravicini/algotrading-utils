@@ -15,6 +15,5 @@ interval = int(sys.argv[2])
 data_out_path = sys.argv[3]
 
 print(f'parsing {data_in_path} in {interval}m frames')
-df = ticks.to_ohlcv(data_in_path, interval, verbose=True)
-ticks.export_dataframe(data_out_path, df)
+df = ticks.to_ohlcv(data_in_path, data_out_path, interval)
 print(f'exported parsed data to {data_out_path}')

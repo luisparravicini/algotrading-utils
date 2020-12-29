@@ -1,34 +1,44 @@
 from datetime import datetime
-import pandas as pd
+import csv
 
-def to_ohlcv(data_file, interval, verbose=False):
+def to_ohlcv(path_in, path_out, interval):
     interval *= 60
 
-    if verbose:
-        print('reading')
-    # dparser = lambda x: datetime.fromtimestamp(int(x))
-    df = pd.read_csv(data_file, names=['date','price','volume'])
-                    # parse_dates=[0], date_parser=dparser)
+    with open(path_out, 'w') as file_out:
+        writer = csv.writer(file_out)
+        writer.writerow(('date', 'open', 'high', 'low', 'close', 'volume'))
 
-    if verbose:
-        print('grouping')
-    agg_data = list()
-    for _name, group in df.groupby(df['date'] // interval):
-        min_date = group['date'].min()
-        agg_data.append((
-            min_date - min_date % interval,
-            group['price'].iloc[0],
-            group['price'].max(),
-            group['price'].min(),
-            group['price'].iloc[-1],
-            group['volume'].sum()
-        ))
+        with open(path_in, 'r') as file:
+            frame_date = None
 
-    if verbose:
-        print('creating new data frame')
+            for row in csv.reader(file):
+                row_date = int(row[0])
+                if frame_date is None or frame_date + interval <= row_date:
+                    if frame_date is not None:
+                        write_row(frame_date, frame_prices, volume, writer)
 
-    columns = ['date', 'open', 'high', 'low', 'close', 'volume']
-    return pd.DataFrame(agg_data, columns=columns)
+                    frame_date = row_date - row_date % interval
 
-def export_dataframe(file, data_frame):
-    data_frame.to_csv(file, index=False, float_format='%.4f')
+                    frame_prices = list()
+                    volume = 0
+                
+                frame_prices.append(float(row[1]))
+                volume += float(row[2])
+            
+            if len(frame_prices) > 0:
+                write_row(frame_date, frame_prices, volume, writer)
+
+def format_float(x):
+    return '%.4f' % x
+
+def write_row(frame_date, frame_prices, volume, writer):
+    out_date = datetime.fromtimestamp(frame_date)
+    out_row = (
+        out_date.strftime('%Y-%m-%d %H:%M:%S'),
+        format_float(frame_prices[0]),
+        format_float(max(frame_prices)),
+        format_float(min(frame_prices)),
+        format_float(frame_prices[-1]),
+        format_float(volume)
+    )
+    writer.writerow(out_row)

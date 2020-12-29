@@ -2,6 +2,7 @@ import ticks
 import pytest
 import io
 from pathlib import Path
+import tempfile
 
 
 def build_path(dir, fname):
@@ -13,19 +14,19 @@ def data_path(fname):
 def data_expected_path(fname):
     return build_path('expected', fname)
 
-def assert_result(data_fname, ohlcv_df):
+def assert_conversion(data_fname, interval=1):
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        out_path = Path(tmp_dir, 'out.csv')
+        ticks.to_ohlcv(data_path(data_fname), out_path, interval)
+        
+        assert out_path.exists()
+        with open(out_path, 'r') as file:
+            ohlcv_data = file.read()
+
     with open(data_expected_path(data_fname), 'r') as file:
         expected = file.read()
 
-    csv_stream = io.StringIO()
-    ticks.export_dataframe(csv_stream, ohlcv_df)
-    output = csv_stream.getvalue()
-
-    assert expected.split("\n") == output.split("\n")
-
-def assert_conversion(data_fname, interval=1):
-    ohlcv_df = ticks.to_ohlcv(data_path(data_fname), interval)
-    assert_result(data_fname, ohlcv_df)
+    assert expected.split("\n") == ohlcv_data.split("\n")
 
 def test_reset_seconds():
     assert_conversion('data_001')
@@ -50,3 +51,6 @@ def test_5m_interval():
 
 def test_volume():
     assert_conversion('data_008')
+
+def test_output_last_frame():
+    assert_conversion('data_009')
