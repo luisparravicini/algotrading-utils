@@ -20,3 +20,11 @@ The parsed csv looks like this:
 date,open,high,low,close,volume
 2015-12-13 06:45:00,120.0000,120.0000,120.0000,120.0000,0.0000
 ```
+
+## Requeriments
+
+Install the dependencies with:
+
+```
+pip install --user -r requeriments-dev.txt
+```
