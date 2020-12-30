@@ -3,6 +3,7 @@ import ccxt
 import time
 from pathlib import Path
 import re
+from .db import Database
 
 
 class Updater:
@@ -16,10 +17,11 @@ class Updater:
         self.symbol = symbol
 
         self.db_base_path = db_base_path
+
         name = re.sub(r'\W', '_', exchange_name + '_' + symbol) + '.db'
         name = name.lower()
         self.db_path = Path(self.db_base_path).joinpath(name)
-        self.db_path.touch()
+        self.db = Database(self.db_path)
 
     def run(self):
         pass

@@ -15,6 +15,7 @@ class MockExchange:
     def fetch_ohlcv(self, symbol, timeframe, limit):
         raise ccxt.BadSymbol()
 
+
 @pytest.fixture
 def updater(tmp_path):
     return Updater(MockExchange.VALID_NAME, MockExchange.VALID_SYMBOL, tmp_path)
@@ -35,11 +36,14 @@ def test_unknown_symbol(tmp_path):
         updater.fetch_ohlcv()
 
 
-def test_create_database(updater):
-    assert updater.db_path.exists()
+def test_database_path(updater):
+    assert updater.db is not None
+    assert updater.db.path == updater.db_path
 
-def test_database_name_is_exchange(updater):
+
+def test_database_name(updater):
     assert updater.db_path.name == 'kraken_btc_usd.db'
+
 
 def test_database_inside_db_path(updater):
     assert updater.db_path.parent == updater.db_base_path
