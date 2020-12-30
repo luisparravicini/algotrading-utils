@@ -18,3 +18,10 @@ class Database:
                     volume REAL);
             ''')
 
+    def add(self, data):
+        self.conn.execute('''
+            INSERT INTO ohlcv
+            (timestamp, open, high, low, close, volume)
+            VALUES
+            (?, ?, ?, ?, ?, ?)
+        ''', data)
