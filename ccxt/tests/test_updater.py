@@ -16,7 +16,7 @@ class MockExchange:
         raise ccxt.BadSymbol()
 
 @pytest.fixture
-def exchange(tmp_path):
+def updater(tmp_path):
     return Updater(MockExchange.VALID_NAME, MockExchange.VALID_SYMBOL, tmp_path)
 
 
@@ -35,8 +35,11 @@ def test_unknown_symbol(tmp_path):
         updater.fetch_ohlcv()
 
 
-def test_create_database(exchange):
-    assert exchange.db_path.exists()
+def test_create_database(updater):
+    assert updater.db_path.exists()
 
-def test_database_name_is_exchange(exchange):
-    assert exchange.db_path.name == exchange.exchange_name + '.db'
+def test_database_name_is_exchange(updater):
+    assert updater.db_path.name == updater.exchange_name + '.db'
+
+def test_database_inside_db_path(updater):
+    assert updater.db_path.parent == updater.db_base_path
