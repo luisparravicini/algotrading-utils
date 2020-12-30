@@ -39,7 +39,7 @@ def test_create_database(updater):
     assert updater.db_path.exists()
 
 def test_database_name_is_exchange(updater):
-    assert updater.db_path.name == updater.exchange_name + '.db'
+    assert updater.db_path.name == 'kraken_btc_usd.db'
 
 def test_database_inside_db_path(updater):
     assert updater.db_path.parent == updater.db_base_path

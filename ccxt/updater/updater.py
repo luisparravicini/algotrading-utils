@@ -2,6 +2,7 @@ from datetime import datetime
 import ccxt
 import time
 from pathlib import Path
+import re
 
 
 class Updater:
@@ -15,8 +16,9 @@ class Updater:
         self.symbol = symbol
 
         self.db_base_path = db_base_path
-        # exchange_name should be composed of only alphanumeric chars!
-        self.db_path = Path(self.db_base_path).joinpath(exchange_name + '.db')
+        name = re.sub(r'\W', '_', exchange_name + '_' + symbol) + '.db'
+        name = name.lower()
+        self.db_path = Path(self.db_base_path).joinpath(name)
         self.db_path.touch()
 
     def run(self):
