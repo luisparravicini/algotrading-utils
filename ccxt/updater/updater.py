@@ -37,15 +37,20 @@ class Updater:
         # the candle is closed (until the next candle starts)."
         #
         # so the last item is discarded
-        return data[:-1]
+        data = data[:-1]
+
+        self.converts_timestamp_to_seconds(data)
+        return data
+
+
+    def converts_timestamp_to_seconds(self, data):
+        for datum in data:
+            datum[0] = datum[0] / 1000
 
     def fetch_and_save(self):
         data = self.fetch_ohlcv()
 
         if len(data) > 0:
-            for datum in data:
-                datum[0] = datum[0] / 1000
-
             self.db.add(data)
 
         for datum in data:

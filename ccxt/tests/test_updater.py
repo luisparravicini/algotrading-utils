@@ -55,10 +55,18 @@ def test_database_inside_db_path(updater):
 
 
 def test_fetch_ohlcv_discards_last(updater):
-    updater.exchange.ohlcv_data = [1, 2, 3]
-    assert updater.fetch_ohlcv() == [1, 2]
+    updater.exchange.ohlcv_data = [[11609370820000], [1609370830000], [1609370840000]]
+    assert updater.fetch_ohlcv() == [[11609370820], [1609370830]]
 
 
 def test_fetch_ohlcv_empty(updater):
     updater.exchange.ohlcv_data = []
     assert updater.fetch_ohlcv() == []
+
+
+def test_fetch_ohlcv_converts_to_secs(updater):
+    updater.exchange.ohlcv_data = [
+        [1609370820000, 9, 9, 9, 9, 9],
+        [1609370820000, 8, 8, 8, 8, 8]
+    ]
+    assert updater.fetch_ohlcv() == [[1609370820, 9, 9, 9, 9, 9]]
