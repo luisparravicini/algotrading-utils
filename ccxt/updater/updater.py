@@ -57,9 +57,12 @@ class Updater:
         for datum in data:
             date = datetime.fromtimestamp(datum[0]).strftime('%Y-%m-%d %H:%M:%S')
             print(date, datum)
+        print()
 
 
     def run(self):
+        print(f'sleep: {self.sleep_time}')
+
         while True:
             self.fetch_and_save()
 
