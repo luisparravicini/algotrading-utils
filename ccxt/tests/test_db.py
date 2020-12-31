@@ -8,15 +8,18 @@ def db(tmp_path):
     return Database(tmp_path.joinpath('db.db'))
 
 
+def db_exec(db_path, query):
+    with sqlite3.connect(db_path) as conn:
+        yield conn.execute(query)
+
+
 def assert_row_count(db, expected):
-    with sqlite3.connect(db.path) as conn:
-        count = conn.execute('SELECT COUNT(1) FROM ohlcv').fetchone()
+    count = next(db_exec(db.path, 'SELECT COUNT(1) FROM ohlcv')).fetchone()
     assert count == (expected, )
 
 
 def assert_rows_data(db, expected):
-    with sqlite3.connect(db.path) as conn:
-        db_data = conn.execute('SELECT * FROM ohlcv').fetchall()
+    db_data = next(db_exec(db.path, 'SELECT * FROM ohlcv')).fetchall()
     assert db_data == expected
 
 
