@@ -22,4 +22,5 @@ COPY updater updater
 
 RUN mkdir data
 
+
 CMD [ "/app/updater.sh", "kraken", "BTC/USD", "/app/data" ]

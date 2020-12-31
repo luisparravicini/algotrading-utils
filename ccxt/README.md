@@ -29,7 +29,7 @@ You can the script with `bin/updater.sh`. It needs three parameters: *exchange n
 There's a Dockerfile to run the script dockerized. The image can be build with:
 
 ```
-docker -t updater build .
+docker build -t updater .
 ```
 
 And you can the container with:
