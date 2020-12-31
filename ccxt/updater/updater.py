@@ -32,14 +32,6 @@ class Updater:
         # again
         data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=20)
 
-        # according to ccxt docs:
-        #
-        # "Note that the info from the last (current) candle may be incomplete until
-        # the candle is closed (until the next candle starts)."
-        #
-        # so the last item is discarded
-        data = data[:-1]
-
         self.converts_timestamp_to_seconds(data)
         return data
 

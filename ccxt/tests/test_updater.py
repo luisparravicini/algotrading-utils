@@ -1,6 +1,7 @@
 import pytest
 from updater import Updater
 import ccxt
+from copy import copy
 
 
 class MockExchange:
@@ -59,9 +60,10 @@ def test_database_inside_db_path(updater):
     assert updater.db_path.parent == updater.db_base_path
 
 
-def test_fetch_ohlcv_discards_last(updater):
-    updater.exchange.ohlcv_data = [[11609370820000], [1609370830000], [1609370840000]]
-    assert updater.fetch_ohlcv() == [[11609370820], [1609370830]]
+def test_fetch_ohlcv(updater):
+    expected = [[11609370820000], [1609370830000], [1609370840000]]
+    updater.exchange.ohlcv_data = copy(expected)
+    assert updater.fetch_ohlcv() == expected
 
 
 def test_fetch_ohlcv_empty(updater):
@@ -71,8 +73,7 @@ def test_fetch_ohlcv_empty(updater):
 
 def test_fetch_ohlcv_converts_to_secs(updater):
     updater.exchange.ohlcv_data = [
-        [1609370820000, 9, 9, 9, 9, 9],
-        [1609370820000, 8, 8, 8, 8, 8]
+        [1609370820000, 9, 9, 9, 9, 9]
     ]
     assert updater.fetch_ohlcv() == [[1609370820, 9, 9, 9, 9, 9]]
 
@@ -84,4 +85,7 @@ def test_fetch_and_save(updater):
         [1609370820000, 8, 8, 8, 8, 8]
     ]
     updater.fetch_and_save()
-    assert updater.db.test_data_add == [[1609370820, 9, 9, 9, 9, 9]]
+    assert updater.db.test_data_add == [
+        [1609370820, 9, 9, 9, 9, 9],
+        [1609370820, 8, 8, 8, 8, 8]
+    ]
