@@ -27,23 +27,23 @@ def test_creates_with_empty_table(db):
 
 def test_add(db):
     data = (1449999960,120.5000,119.6000,118.7000,117.8000,0.9000)
-    db.add(data)
+    db.add([data])
 
     assert_rows_data(db, [data])
 
 
 def test_add_several(db):
     data1 = (1449999960,120,119,118,117,116)
-    db.add(data1)
+    db.add([data1])
     data2 = (1449999961,999,999,999,999,999)
-    db.add(data2)
+    db.add([data2])
 
     assert_rows_data(db, [data1, data2])
 
 def test_add_update_with_same_timestamp(db):
     data1 = (1449999960,120,119,118,117,116)
-    db.add(data1)
+    db.add([data1])
     data2 = (1449999960,999,999,999,999,999)
-    db.add(data2)
+    db.add([data2])
 
     assert_rows_data(db, [data2])

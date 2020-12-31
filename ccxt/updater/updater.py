@@ -39,14 +39,22 @@ class Updater:
         # so the last item is discarded
         return data[:-1]
 
+    def fetch_and_save(self):
+        data = self.fetch_ohlcv()
+
+        if len(data) > 0:
+            for datum in data:
+                datum[0] = datum[0] / 1000
+
+            self.db.add(data)
+
+        for datum in data:
+            date = datetime.fromtimestamp(datum[0]).strftime('%Y-%m-%d %H:%M:%S')
+            print(date, datum)
+
 
     def run(self):
         while True:
-            data = self.fetch_ohlcv()
-
-            for datum in data:
-                date = datetime.fromtimestamp(datum[0] / 1000).strftime('%Y-%m-%d %H:%M:%S')
-                print(date, datum)
-
+            self.fetch_and_save()
 
             time.sleep(45)

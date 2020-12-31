@@ -19,7 +19,7 @@ class Database:
             ''')
 
     def add(self, data):
-        self.conn.execute('''
+        self.conn.executemany('''
             INSERT OR REPLACE INTO ohlcv
             (timestamp, open, high, low, close, volume)
             VALUES
