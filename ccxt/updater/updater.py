@@ -23,6 +23,8 @@ class Updater:
         self.db_path = Path(self.db_base_path).joinpath(name)
         self.db = Database(self.db_path)
 
+        self.sleep_time = 45
+
 
     def fetch_ohlcv(self):
         since = self.db.newest_timestamp()
@@ -32,13 +34,16 @@ class Updater:
         if since is not None:
             since -= 1
 
+            # we store timestamps in seconds, ccxt uses millis
+            since *= 1000
+
         data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
 
-        self.converts_timestamp_to_seconds(data)
+        self.timestamps_to_seconds(data)
         return data
 
 
-    def converts_timestamp_to_seconds(self, data):
+    def timestamps_to_seconds(self, data):
         for datum in data:
             datum[0] = datum[0] // 1000
 
@@ -58,4 +63,4 @@ class Updater:
         while True:
             self.fetch_and_save()
 
-            time.sleep(45)
+            time.sleep(self.sleep_time)

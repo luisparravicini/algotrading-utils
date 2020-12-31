@@ -109,7 +109,7 @@ def test_fetch_since_with_empty_db(updater):
 def test_fetch_since_with_data(updater):
     expected = 1609370820000
     updater.db = MockDB()
-    updater.db.test_timestamp = expected + 1
+    updater.db.test_timestamp = expected // 1000 + 1
     
     updater.fetch_ohlcv()
 
