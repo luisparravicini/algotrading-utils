@@ -25,3 +25,4 @@ class Database:
             VALUES
             (?, ?, ?, ?, ?, ?)
         ''', data)
+        self.conn.commit()
