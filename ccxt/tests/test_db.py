@@ -46,6 +46,7 @@ def test_add_several(db):
 
     assert_rows_data(db, [data1, data2])
 
+
 def test_add_update_with_same_timestamp(db):
     data1 = (1449999960,120,119,118,117,116)
     db.add([data1])
@@ -53,3 +54,18 @@ def test_add_update_with_same_timestamp(db):
     db.add([data2])
 
     assert_rows_data(db, [data2])
+
+
+def test_newest_timestamp_when_empty(db):
+    assert db.newest_timestamp() is None
+
+
+def test_newest_timestamp(db):
+    expected = 2549999960
+    db.add([
+        (1449999960,120,119,118,117,116),
+        (expected,999,999,999,999,999),
+        (1449999980,999,999,999,999,999)
+    ])
+
+    assert db.newest_timestamp() == expected

@@ -25,12 +25,14 @@ class Updater:
 
 
     def fetch_ohlcv(self):
-        # limit=20, why?
-        #
-        # The list item will be discarded and the rest are just in case
-        # the updater crashes and some time passes before the updater starts
-        # again
-        data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', limit=20)
+        since = self.db.newest_timestamp()
+        # some exchanges use since as an exclusive limit
+        # we ask again for the last candle in case the last time we
+        # got that data, it was not closed yet and contained partial data
+        if since is not None:
+            since -= 1
+
+        data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
 
         self.converts_timestamp_to_seconds(data)
         return data

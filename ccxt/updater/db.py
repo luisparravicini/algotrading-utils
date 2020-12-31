@@ -26,3 +26,10 @@ class Database:
             (?, ?, ?, ?, ?, ?)
         ''', data)
         self.conn.commit()
+
+    def newest_timestamp(self):
+        cursor = self.conn.execute('SELECT MAX(timestamp) FROM ohlcv')
+        data = cursor.fetchone()[0]
+        cursor.close()
+
+        return data

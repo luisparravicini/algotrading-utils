@@ -14,16 +14,25 @@ class MockExchange:
         self.exchange_name = exchange_name
         self.ohlcv_data = []
     
-    def fetch_ohlcv(self, symbol, timeframe, limit):
+    def fetch_ohlcv(self, symbol, timeframe, since):
         if symbol != MockExchange.VALID_SYMBOL:
             raise ccxt.BadSymbol()
         
+        self.test_since = since
+
         return self.ohlcv_data
 
 
 class MockDB:
+    def __init__(self):
+        self.test_data_add = None
+        self.test_timestamp = None
+
     def add(self, data):
         self.test_data_add = data
+
+    def newest_timestamp(self):
+        return self.test_timestamp
 
 
 @pytest.fixture
@@ -89,3 +98,19 @@ def test_fetch_and_save(updater):
         [1609370820, 9, 9, 9, 9, 9],
         [1609370820, 8, 8, 8, 8, 8]
     ]
+
+
+def test_fetch_since_with_empty_db(updater):
+    updater.db = MockDB()
+    updater.fetch_ohlcv()
+    assert updater.exchange.test_since == None
+
+
+def test_fetch_since_with_data(updater):
+    expected = 1609370820000
+    updater.db = MockDB()
+    updater.db.test_timestamp = expected + 1
+    
+    updater.fetch_ohlcv()
+
+    assert updater.exchange.test_since == expected
