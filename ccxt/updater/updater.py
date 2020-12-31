@@ -23,6 +23,7 @@ class Updater:
         self.db_path = Path(self.db_base_path).joinpath(name)
         self.db = Database(self.db_path)
 
+
     def fetch_ohlcv(self):
         # limit=20, why?
         #
@@ -45,7 +46,8 @@ class Updater:
 
     def converts_timestamp_to_seconds(self, data):
         for datum in data:
-            datum[0] = datum[0] / 1000
+            datum[0] = datum[0] // 1000
+
 
     def fetch_and_save(self):
         data = self.fetch_ohlcv()

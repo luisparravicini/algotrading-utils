@@ -20,6 +20,11 @@ class MockExchange:
         return self.ohlcv_data
 
 
+class MockDB:
+    def add(self, data):
+        self.test_data_add = data
+
+
 @pytest.fixture
 def updater(tmp_path):
     updater = Updater(MockExchange.VALID_NAME, MockExchange.VALID_SYMBOL, tmp_path)
@@ -70,3 +75,13 @@ def test_fetch_ohlcv_converts_to_secs(updater):
         [1609370820000, 8, 8, 8, 8, 8]
     ]
     assert updater.fetch_ohlcv() == [[1609370820, 9, 9, 9, 9, 9]]
+
+
+def test_fetch_and_save(updater):
+    updater.db = MockDB()
+    updater.exchange.ohlcv_data = [
+        [1609370820000, 9, 9, 9, 9, 9],
+        [1609370820000, 8, 8, 8, 8, 8]
+    ]
+    updater.fetch_and_save()
+    assert updater.db.test_data_add == [[1609370820, 9, 9, 9, 9, 9]]
