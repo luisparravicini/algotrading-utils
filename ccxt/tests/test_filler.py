@@ -10,10 +10,11 @@ def filler(tmp_path):
     return filler
 
 
-def assert_gaps(min, max, gaps_data, filler):
+def assert_gaps(data, gaps_data, filler):
+    filler.db.test_all_timestamps = data
     gaps = filler.find_gaps()
-    assert gaps.min == min
-    assert gaps.max == max
+    assert gaps.min == min(data)
+    assert gaps.max == max(data)
     assert gaps_data == gaps.gaps
 
 
@@ -23,62 +24,62 @@ def test_no_items(filler):
 
 
 def test_one_item(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999961,
     ]
-    assert_gaps(1449999961, 1449999961, list(), filler)
+    assert_gaps(data, list(), filler)
 
 
 def test_two_items(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999961,
     ]
-    assert_gaps(1449999960, 1449999961, list(), filler)
+    assert_gaps(data, list(), filler)
 
 
 def test_no_gaps(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999961,
         1449999962,
     ]
-    assert_gaps(1449999960, 1449999962, list(), filler)
+    assert_gaps(data, list(), filler)
 
 def test_one_gap(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999961,
         1449999964,
         1449999965,
     ]
-    assert_gaps(1449999960, 1449999965, [(1449999962, 1449999963)], filler)
+    assert_gaps(data, [(1449999962, 1449999963)], filler)
 
 
 def test_several_gaps(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999961,
         1449999964,
         1449999968,
         1449999969,
     ]
-    assert_gaps(1449999960, 1449999969, [(1449999962, 1449999963), (1449999965, 1449999967)], filler)
+    assert_gaps(data, [(1449999962, 1449999963), (1449999965, 1449999967)], filler)
 
 
 def test_gap_at_end(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999961,
         1449999964,
     ]
-    assert_gaps(1449999960, 1449999964, [(1449999962, 1449999963)], filler)
+    assert_gaps(data, [(1449999962, 1449999963)], filler)
 
 
 def test_gap_at_beginning(filler):
-    filler.db.test_all_timestamps = [
+    data = [
         1449999960,
         1449999964,
         1449999965,
     ]
-    assert_gaps(1449999960, 1449999965, [(1449999961, 1449999963)], filler)
+    assert_gaps(data, [(1449999961, 1449999963)], filler)
