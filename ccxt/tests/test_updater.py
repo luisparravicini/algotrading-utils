@@ -2,6 +2,7 @@ import pytest
 from updater import Updater
 import ccxt
 from copy import copy
+from mock_db import MockDB
 
 
 class MockExchange:
@@ -21,18 +22,6 @@ class MockExchange:
         self.test_since = since
 
         return self.ohlcv_data
-
-
-class MockDB:
-    def __init__(self):
-        self.test_data_add = None
-        self.test_timestamp = None
-
-    def add(self, data):
-        self.test_data_add = data
-
-    def newest_timestamp(self):
-        return self.test_timestamp
 
 
 @pytest.fixture

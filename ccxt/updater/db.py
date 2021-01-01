@@ -1,4 +1,5 @@
 import sqlite3
+from contextlib import closing
 
 
 class Database:
@@ -33,3 +34,10 @@ class Database:
         cursor.close()
 
         return data
+
+    def fetch_timestamps(self):
+        query = 'SELECT timestamp FROM ohlcv ORDER BY timestamp ASC'
+        with closing(self.conn.execute(query)) as cursor:
+            for row in cursor:
+                yield row[0]
+

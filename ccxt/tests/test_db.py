@@ -69,3 +69,26 @@ def test_newest_timestamp(db):
     ])
 
     assert db.newest_timestamp() == expected
+
+
+def test_fetch_timestamps_several(db):
+    db.add([
+        (1449999960,120,119,118,117,116),
+        (1449999980,999,999,999,999,999)
+    ])
+
+    assert [1449999960, 1449999980] == list(db.fetch_timestamps())
+
+
+def test_fetch_timestamps_empty(db):
+    print(list(db.fetch_timestamps()))
+    assert [] == list(db.fetch_timestamps())
+
+
+def test_fetch_timestamps_ordered(db):
+    db.add([
+        (1449999980,999,999,999,999,999),
+        (1449999960,120,119,118,117,116)
+    ])
+
+    assert [1449999960, 1449999980] == list(db.fetch_timestamps())
