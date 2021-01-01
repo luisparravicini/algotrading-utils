@@ -17,7 +17,7 @@ COPY --from=builder /deps_install /usr/local
 
 WORKDIR /app
 
-COPY bin/updater.sh .
+COPY bin/updater.sh bin/
 COPY updater updater
 
 RUN mkdir data

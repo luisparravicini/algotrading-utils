@@ -7,18 +7,11 @@ Currently there's code to connect to an exchange, pull the ohlcv data periodical
 
 ## Requeriments
 
-Install the dependencies with:
-
-```
-pip install --user -r requeriments.txt
-```
-
-And the dev dependencies are listed in `requeriments-dev.txt`
-
+Install the production and development dependencies with `make install-deps`
 
 ## Run it
 
-You can the script with `bin/updater.sh`. It needs three parameters: *exchange name*, *symbol* and path to where the database will be created.
+You can the script with `bin/updater.sh`. It needs three parameters: *exchange name*, *symbol* and path to where the database will be created. The path needs to exist.
 
 ```
 ./bin/updater.sh kraken BTC/USD ./data
@@ -26,17 +19,8 @@ You can the script with `bin/updater.sh`. It needs three parameters: *exchange n
 
 ## Docker
 
-There's a Dockerfile to run the script dockerized. The image can be build with:
+There's a Dockerfile to run the script dockerized.
 
-```
-docker build -t updater .
-```
+Build the image with `make docker-build` and run it with `make docker-run`.
 
-And you can the container with:
-
-```
-mkdir data
-docker run -it --mount type=bind,source="$(pwd)"/data,target=/app/data updater
-```
-
-The path where the script creates the database is mount on the host in the `data` directory created before running docker.
+The path where the script creates the database is mounted on the host in the `data` directory created before running docker.
