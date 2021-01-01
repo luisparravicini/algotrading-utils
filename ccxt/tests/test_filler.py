@@ -10,6 +10,13 @@ def filler(tmp_path):
     return filler
 
 
+def assert_gaps(min, max, gaps_data, filler):
+    gaps = filler.find_gaps()
+    assert gaps.min == min
+    assert gaps.max == max
+    assert gaps_data == gaps.gaps
+
+
 def test_no_items(filler):
     filler.db.test_all_timestamps = list()
     assert filler.find_gaps() is None
@@ -19,10 +26,7 @@ def test_one_item(filler):
     filler.db.test_all_timestamps = [
         1449999961,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999961
-    assert gaps.max == 1449999961
-    assert len(gaps.gaps) == 0
+    assert_gaps(1449999961, 1449999961, list(), filler)
 
 
 def test_two_items(filler):
@@ -30,10 +34,8 @@ def test_two_items(filler):
         1449999960,
         1449999961,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999961
-    assert len(gaps.gaps) == 0
+    assert_gaps(1449999960, 1449999961, list(), filler)
+
 
 def test_no_gaps(filler):
     filler.db.test_all_timestamps = [
@@ -41,10 +43,7 @@ def test_no_gaps(filler):
         1449999961,
         1449999962,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999962
-    assert [] == gaps.gaps
+    assert_gaps(1449999960, 1449999962, list(), filler)
 
 def test_one_gap(filler):
     filler.db.test_all_timestamps = [
@@ -53,10 +52,7 @@ def test_one_gap(filler):
         1449999964,
         1449999965,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999965
-    assert [(1449999962, 1449999963)] == gaps.gaps
+    assert_gaps(1449999960, 1449999965, [(1449999962, 1449999963)], filler)
 
 
 def test_several_gaps(filler):
@@ -67,10 +63,7 @@ def test_several_gaps(filler):
         1449999968,
         1449999969,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999969
-    assert [(1449999962, 1449999963), (1449999965, 1449999967)] == gaps.gaps
+    assert_gaps(1449999960, 1449999969, [(1449999962, 1449999963), (1449999965, 1449999967)], filler)
 
 
 def test_gap_at_end(filler):
@@ -79,10 +72,7 @@ def test_gap_at_end(filler):
         1449999961,
         1449999964,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999964
-    assert [(1449999962, 1449999963)] == gaps.gaps
+    assert_gaps(1449999960, 1449999964, [(1449999962, 1449999963)], filler)
 
 
 def test_gap_at_beginning(filler):
@@ -91,7 +81,4 @@ def test_gap_at_beginning(filler):
         1449999964,
         1449999965,
     ]
-    gaps = filler.find_gaps()
-    assert gaps.min == 1449999960
-    assert gaps.max == 1449999965
-    assert [(1449999961, 1449999963)] == gaps.gaps
+    assert_gaps(1449999960, 1449999965, [(1449999961, 1449999963)], filler)
