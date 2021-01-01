@@ -7,8 +7,8 @@ RUN apk --no-cache add gcc musl-dev libffi-dev openssl-dev
 RUN mkdir /deps_install
 
 WORKDIR /app
-COPY requeriments.txt .
-RUN pip install --prefix=/deps_install -r requeriments.txt
+COPY requirements.txt .
+RUN pip install --prefix=/deps_install -r requirements.txt
 
 
 FROM base
@@ -23,4 +23,4 @@ COPY updater updater
 RUN mkdir data
 
 
-CMD [ "/app/updater.sh", "kraken", "BTC/USD", "/app/data" ]
+CMD [ "/app/bin/updater.sh", "kraken", "BTC/USD", "/app/data" ]
