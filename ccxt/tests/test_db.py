@@ -23,13 +23,28 @@ def assert_rows_data(db, expected):
     assert db_data == expected
 
 
-def test_database_inside_db_path(db, tmp_path):
+def test_database_inside_db_path(tmp_path):
+    db = Database('exch', 'eth/usd', tmp_path)
     assert db.path.parent == tmp_path
 
 def test_path_as_str(tmp_path):
     Database('exch', 'eth/usd', str(tmp_path))
     assert True
 
+
+def test_path_lower(tmp_path):
+    db = Database('ExchangeName', 'ETH', tmp_path)
+    assert db.path.stem == 'exchangename_eth'
+
+
+def test_path_extension(tmp_path):
+    db = Database('ExchangeName', 'ETH', tmp_path)
+    assert db.path.suffix == '.db'
+
+
+def test_path_remove_non_alpha(tmp_path):
+    db = Database('Exchange+Name', 'ETH/USD', tmp_path)
+    assert db.path.stem == 'exchange_name_eth_usd'
 
 def test_create_empty(db):
     assert db.path.exists()
