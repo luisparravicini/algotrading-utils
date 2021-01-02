@@ -29,9 +29,13 @@ class Updater:
             # we store timestamps in seconds, ccxt uses millis
             since *= 1000
 
-        data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
+        try:
+            data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
+            self.timestamps_to_seconds(data)
+        except ccxt.NetworkError as err:
+            print(f'ERROR: {err}')
+            data = []
 
-        self.timestamps_to_seconds(data)
         return data
 
 

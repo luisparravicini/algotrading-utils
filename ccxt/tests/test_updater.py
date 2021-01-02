@@ -14,10 +14,14 @@ class MockExchange:
     def __init__(self, exchange_name):
         self.exchange_name = exchange_name
         self.ohlcv_data = []
+        self.test_fetch_ohlcv_error = None
     
+
     def fetch_ohlcv(self, symbol, timeframe, since):
         if symbol != MockExchange.VALID_SYMBOL:
             raise ccxt.BadSymbol()
+        if self.test_fetch_ohlcv_error is not None:
+            raise self.test_fetch_ohlcv_error
         
         self.test_since = since
 
@@ -90,3 +94,9 @@ def test_fetch_since_with_data(updater):
     updater.fetch_ohlcv()
 
     assert updater.exchange.test_since == expected
+
+
+def test_network_error(updater):
+    updater.db = MockDB()
+    updater.exchange.test_fetch_ohlcv_error = ccxt.NetworkError()
+    assert [] == updater.fetch_ohlcv()
