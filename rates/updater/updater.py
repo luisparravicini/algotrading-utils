@@ -3,15 +3,12 @@ import ccxt
 import time
 import re
 from .db import Database
+from .exchange import build_exchange
 
 
 class Updater:
     def __init__(self, exchange_name, symbol, db_base_path):
-        exchange = getattr(ccxt, exchange_name)
-        self.exchange = exchange({
-            'enableRateLimit': True
-        })
-
+        self.exchange = build_exchange(exchange_name)
         self.symbol = symbol
         self.db = Database(exchange_name, self.symbol, db_base_path)
         self.sleep_time = 45
