@@ -45,19 +45,6 @@ def test_unknown_symbol(updater):
         updater.fetch_ohlcv()
 
 
-def test_database_path(updater):
-    assert updater.db is not None
-    assert updater.db.path == updater.db_path
-
-
-def test_database_name(updater):
-    assert updater.db_path.name == 'kraken_btc_usd.db'
-
-
-def test_database_inside_db_path(updater):
-    assert updater.db_path.parent == updater.db_base_path
-
-
 def test_fetch_ohlcv(updater):
     expected = [[11609370820000], [1609370830000], [1609370840000]]
     updater.exchange.ohlcv_data = copy(expected)

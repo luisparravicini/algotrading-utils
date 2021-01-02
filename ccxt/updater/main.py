@@ -1,8 +1,6 @@
 import sys
-import re
 from datetime import datetime
 from updater import Updater, Filler
-from pathlib import Path
 
 
 def updater_main(exchange_name, symbol, db_path):
@@ -12,15 +10,12 @@ def updater_main(exchange_name, symbol, db_path):
     updater.run()
 
 
-def iso8601(timestmap_secs):
-    return datetime.fromtimestamp(timestmap_secs).isoformat()
-
 def filler_main(exchange_name, symbol, db_path):
-    name = re.sub(r'\W', '_', exchange_name + '_' + symbol) + '.db'
-    name = name.lower()
-    db_path = Path(db_path).joinpath(name)
+    filler = Filler(exchange_name, symbol, db_path)
 
-    filler = Filler(db_path)
+    def iso8601(timestmap_secs):
+        return datetime.fromtimestamp(timestmap_secs).isoformat()
+
     gaps = filler.find_gaps()
     print(f'min: {iso8601(gaps.min)} ({gaps.min})')
     print(f'max: {iso8601(gaps.max)} ({gaps.max})')

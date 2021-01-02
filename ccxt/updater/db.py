@@ -1,11 +1,13 @@
 import sqlite3
 from contextlib import closing
+from pathlib import Path
+import re
 
 
 class Database:
-    def __init__(self, path):
-        self.path = path
-        new_db = not path.exists()
+    def __init__(self, exchange_name, symbol, base_path):
+        self.path = self._build_name(exchange_name, symbol, base_path)
+        new_db = not self.path.exists()
         self.conn = sqlite3.connect(self.path)
 
         if new_db:
@@ -18,6 +20,12 @@ class Database:
                     close REAL,
                     volume REAL);
             ''')
+
+
+    def _build_name(self, exchange_name, symbol, base_path):
+        name = re.sub(r'\W', '_', exchange_name + '_' + symbol) + '.db'
+        name = name.lower()
+        return Path(base_path).joinpath(name)
 
     def add(self, data):
         self.conn.executemany('''

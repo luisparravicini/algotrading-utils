@@ -5,7 +5,7 @@ import sqlite3
 
 @pytest.fixture
 def db(tmp_path):
-    return Database(tmp_path.joinpath('db.db'))
+    return Database('kraken', 'BTC/USD', tmp_path)
 
 
 def db_exec(db_path, query):
@@ -21,6 +21,14 @@ def assert_row_count(db, expected):
 def assert_rows_data(db, expected):
     db_data = next(db_exec(db.path, 'SELECT * FROM ohlcv')).fetchall()
     assert db_data == expected
+
+
+def test_database_inside_db_path(db, tmp_path):
+    assert db.path.parent == tmp_path
+
+def test_path_as_str(tmp_path):
+    Database('exch', 'eth/usd', str(tmp_path))
+    assert True
 
 
 def test_create_empty(db):

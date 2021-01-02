@@ -1,4 +1,3 @@
-from pathlib import Path
 from .db import Database
 import collections
 
@@ -6,8 +5,8 @@ import collections
 Gaps = collections.namedtuple('Gaps', ('min', 'max', 'gaps'))
 
 class Filler:
-    def __init__(self, db_path):
-        self.db = Database(Path(db_path))
+    def __init__(self, exchange_name, symbol, base_db_path):
+        self.db = Database(exchange_name, symbol, base_db_path)
 
     
     def find_gaps(self):

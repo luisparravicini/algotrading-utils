@@ -1,7 +1,6 @@
 from datetime import datetime
 import ccxt
 import time
-from pathlib import Path
 import re
 from .db import Database
 
@@ -15,14 +14,7 @@ class Updater:
         })
 
         self.symbol = symbol
-
-        self.db_base_path = db_base_path
-
-        name = re.sub(r'\W', '_', exchange_name + '_' + symbol) + '.db'
-        name = name.lower()
-        self.db_path = Path(self.db_base_path).joinpath(name)
-        self.db = Database(self.db_path)
-
+        self.db = Database(self.exchange_name, self.symbol, db_base_path)
         self.sleep_time = 45
 
 

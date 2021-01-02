@@ -5,7 +5,7 @@ from mock_db import MockDB
 
 @pytest.fixture
 def filler(tmp_path):
-    filler = Filler(tmp_path.joinpath('db.db'))
+    filler = Filler('kraken', 'BTC/USD', tmp_path)
     filler.db = MockDB()
     return filler
 
@@ -16,11 +16,6 @@ def assert_gaps(data, gaps_data, filler):
     assert gaps.min == min(data)
     assert gaps.max == max(data)
     assert gaps_data == gaps.gaps
-
-
-def test_bug_path_as_str(tmp_path):
-    Filler(str(tmp_path) + '/a')
-    assert True
 
 
 def test_no_items(filler):
