@@ -1,6 +1,7 @@
 # backtrader + CCXT
 
-This is based on [rodrigo-brito/backtrader-binance-bot])https://github.com/rodrigo-brito/backtrader-binance-bot)
+This is based on [rodrigo-brito/backtrader-binance-bot])https://github.com/rodrigo-brito/backtrader-binance-bot).
+For now, the code hasn't been modified and is *exactly* as Brito's code.
 
 ----
 
