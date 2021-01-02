@@ -18,6 +18,11 @@ def assert_gaps(data, gaps_data, filler):
     assert gaps_data == gaps.gaps
 
 
+def test_bug_path_as_str(tmp_path):
+    Filler(str(tmp_path) + '/a')
+    assert True
+
+
 def test_no_items(filler):
     filler.db.test_all_timestamps = list()
     assert filler.find_gaps() is None
@@ -33,12 +38,12 @@ def test_one_item(filler):
 def test_two_items(filler):
     data = [
         1449999960,
-        1449999961,
+        1450000020,
     ]
     assert_gaps(data, list(), filler)
 
 
-def test_no_gaps(filler):
+def test_no_gaps_all_in_same_minute(filler):
     data = [
         1449999960,
         1449999961,
@@ -46,40 +51,58 @@ def test_no_gaps(filler):
     ]
     assert_gaps(data, list(), filler)
 
-def test_one_gap(filler):
+
+def test_no_gaps(filler):
     data = [
         1449999960,
-        1449999961,
-        1449999964,
-        1449999965,
+        1450000020,
+        1450000080,
     ]
-    assert_gaps(data, [(1449999962, 1449999963)], filler)
+    assert_gaps(data, list(), filler)
+
+def test_one_gap_of_one_min(filler):
+    data = [
+        1449999960,
+        1450000020,
+        1450000140,
+        1450000200,
+    ]
+    assert_gaps(data, [(1450000080, 1450000080)], filler)
+
+def test_one_gap_bigger_than_1m(filler):
+    data = [
+        1449999960,
+        1450000020,
+        1450000200,
+        1450000260,
+    ]
+    assert_gaps(data, [(1450000080, 1450000140)], filler)
 
 
 def test_several_gaps(filler):
     data = [
         1449999960,
-        1449999961,
-        1449999964,
-        1449999968,
-        1449999969,
+        1450000020,
+        1450000200,
+        1450000320,
+        1450000380,
     ]
-    assert_gaps(data, [(1449999962, 1449999963), (1449999965, 1449999967)], filler)
+    assert_gaps(data, [(1450000080, 1450000140), (1450000260, 1450000260)], filler)
 
 
 def test_gap_at_end(filler):
     data = [
         1449999960,
-        1449999961,
-        1449999964,
+        1450000020,
+        1450000140,
     ]
-    assert_gaps(data, [(1449999962, 1449999963)], filler)
+    assert_gaps(data, [(1450000080, 1450000080)], filler)
 
 
 def test_gap_at_beginning(filler):
     data = [
         1449999960,
-        1449999964,
-        1449999965,
+        1450000140,
+        1450000200,
     ]
-    assert_gaps(data, [(1449999961, 1449999963)], filler)
+    assert_gaps(data, [(1450000020, 1450000080)], filler)

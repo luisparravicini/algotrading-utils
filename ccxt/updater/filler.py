@@ -7,10 +7,12 @@ Gaps = collections.namedtuple('Gaps', ('min', 'max', 'gaps'))
 
 class Filler:
     def __init__(self, db_path):
-        self.db = Database(db_path)
+        self.db = Database(Path(db_path))
 
     
     def find_gaps(self):
+        interval = 60
+        clear_secs = lambda x: (x // interval) * interval
         min_tm = max_tm = None
         gaps = list()
         for timestamp in self.db.fetch_timestamps():
@@ -18,12 +20,12 @@ class Filler:
 
             if min_tm is None:
                 min_tm = timestamp
-                last_tm = min_tm
+                last_tm = clear_secs(min_tm)
                 continue
 
-            print((timestamp,last_tm), timestamp-last_tm,timestamp==last_tm)
-            if timestamp - 1 != last_tm:
-                gaps.append((last_tm + 1, timestamp - 1))
+            timestamp = clear_secs(timestamp)
+            if timestamp != last_tm and timestamp - interval != last_tm:
+                gaps.append((last_tm + interval, timestamp - interval))
             
             last_tm = timestamp
 

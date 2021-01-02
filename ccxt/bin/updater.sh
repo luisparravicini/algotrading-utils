@@ -3,4 +3,4 @@
 dir=`dirname "$0"`
 cd "$dir"/..
 
-python -m updater.main $1 $2 $3
+python -m updater.main updater $1 $2 $3

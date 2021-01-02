@@ -67,3 +67,4 @@ class Updater:
             self.fetch_and_save()
 
             time.sleep(self.sleep_time)
+
