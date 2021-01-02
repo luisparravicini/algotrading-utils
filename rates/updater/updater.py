@@ -7,14 +7,13 @@ from .db import Database
 
 class Updater:
     def __init__(self, exchange_name, symbol, db_base_path):
-        self.exchange_name = exchange_name
         exchange = getattr(ccxt, exchange_name)
         self.exchange = exchange({
             'enableRateLimit': True
         })
 
         self.symbol = symbol
-        self.db = Database(self.exchange_name, self.symbol, db_base_path)
+        self.db = Database(exchange_name, self.symbol, db_base_path)
         self.sleep_time = 45
 
 
