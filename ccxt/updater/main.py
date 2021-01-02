@@ -21,7 +21,7 @@ def filler_main(exchange_name, symbol, db_path):
     print(f'max: {iso8601(gaps.max)} ({gaps.max})')
     print('gaps:')
     for gap in gaps.gaps:
-        print(f'  ({iso8601(gap[0])} - {iso8601(gap[1])}) ({gap[0]}-{gap[1]})')
+        print(f'  ({iso8601(gap[0])} - {iso8601(gap[1])}, {(gap[1] - gap[0])//60}m) ({gap[0]}-{gap[1]})')
 
 
 action = sys.argv[1]
