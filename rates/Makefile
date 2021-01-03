@@ -8,3 +8,7 @@ docker-build:
 docker-run: docker-build
 	if [ ! -d data ]; then mkdir data; fi
 	docker run -ti -v`pwd`/data:/app/data algotrading-utils/updater
+
+test:
+	pytest -vv
+
