@@ -3,6 +3,8 @@
 Rate updater lets you periodically poll an exchange's pair rate and save it to a SQLite3 database.
 It can also fetch older data on demand.
 
+**NOTE**: Since I wrote this, I've found [guptarohit/cryptoCMD](https://github.com/guptarohit/cryptoCMD) which seems to do something similar and looks more mature than what I wrote. Haven't used *cryptoCMD* yet, though.
+
 
 ## Requeriments
 
