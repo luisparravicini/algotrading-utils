@@ -23,4 +23,6 @@ COPY updater updater
 RUN mkdir data
 
 
-CMD [ "/app/bin/updater.sh", "kraken", "BTC/USD", "/app/data" ]
+# kraken: BTC/USD
+# binance: BTC/USDC
+CMD [ "/app/bin/updater.sh", "binance", "BTC/USDC", "/app/data" ]
