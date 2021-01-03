@@ -21,7 +21,7 @@ You can the script with `bin/updater.sh`. It needs three parameters: *exchange n
 You can check if there are missing info in the downloaded data with:
 
 ```
-python -m updater.main filler <exchange> <pair> <data_path>
+python -m updater.main gaps <exchange> <pair> <data_path>
 ```
 
 It will list the min/max date found and a list of gaps found:

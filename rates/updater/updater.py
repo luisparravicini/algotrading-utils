@@ -3,7 +3,7 @@ import ccxt
 import time
 import re
 from .db import Database
-from .exchange import build_exchange
+from .exchange import build_exchange, timestamps_to_seconds, secs_to_millis
 
 
 class Updater:
@@ -23,21 +23,16 @@ class Updater:
             since -= 1
 
             # we store timestamps in seconds, ccxt uses millis
-            since *= 1000
+            since = secs_to_millis(since)
 
         try:
             data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
-            self.timestamps_to_seconds(data)
+            timestamps_to_seconds(data)
         except ccxt.NetworkError as err:
             print(f'ERROR: {err}')
             data = []
 
         return data
-
-
-    def timestamps_to_seconds(self, data):
-        for datum in data:
-            datum[0] = datum[0] // 1000
 
 
     def fetch_and_save(self):
@@ -59,4 +54,3 @@ class Updater:
             self.fetch_and_save()
 
             time.sleep(self.sleep_time)
-

@@ -101,3 +101,56 @@ def test_gap_at_beginning(filler):
         1450000200,
     ]
     assert_gaps(data, [(1450000020, 1450000080)], filler)
+
+
+def assert_fill(mocker, filler, configuration, start, stop, expected):
+    mock = mocker.Mock()
+    mock.configure_mock(**configuration)
+    m = mock.fetch_ohlcv
+
+    filler.exchange = mock
+    filler.fill(start, stop)
+
+    assert expected == filler.db.test_data_add
+
+
+def test_fill_one_fetch(filler, mocker):
+    assert_fill(mocker, filler, {
+        'fetch_ohlcv.return_value': [
+            [1450000200000, 1, 2, 3, 4, 5],
+            [1450000260000, 11, 12, 13, 14, 15],
+        ]
+    }, 1450000200, 1450000260, [
+        [1450000200, 1, 2, 3, 4, 5],
+        [1450000260, 11, 12, 13, 14, 15],
+    ])
+
+
+def test_fill_several_fetchs(filler, mocker):
+    assert_fill(mocker, filler, {
+        'fetch_ohlcv.side_effect': [
+            [
+                [1450000200000, 1, 2, 3, 4, 5],
+                [1450000260000, 11, 12, 13, 14, 15],
+            ], [
+                [1450000320000, 21, 22, 23, 24, 25]
+            ]
+        ]
+    }, 1450000200, 1450000320, [
+        [1450000200, 1, 2, 3, 4, 5],
+        [1450000260, 11, 12, 13, 14, 15],
+        [1450000320, 21, 22, 23, 24, 25],
+    ])
+
+
+def test_fill_fetch_returns_data_beyond_stop(filler, mocker):
+    assert_fill(mocker, filler, {
+        'fetch_ohlcv.return_value': [
+            [1450000200000, 1, 2, 3, 4, 5],
+            [1450000260000, 11, 12, 13, 14, 15],
+            [1450000320000, 21, 22, 23, 24, 25]
+        ]
+    }, 1450000200, 1450000260, [
+        [1450000200, 1, 2, 3, 4, 5],
+        [1450000260, 11, 12, 13, 14, 15],
+    ])
