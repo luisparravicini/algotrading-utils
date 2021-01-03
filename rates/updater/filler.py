@@ -43,17 +43,19 @@ class Filler:
         since = start_timestamp
         while since < stop_timestamp:
             if verbose:
-                print(f'fetching since {since}', end='', flush=True)
+                print(f'fetching since {since} ', end='', flush=True)
 
             data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1m', since=since)
             since = max(data, key=lambda x: x[0])[0]
 
+            if all(x[0] > stop_timestamp for x in data):
+                print('returned data outside max value')
+                break
+
             data_in_range = list(filter(lambda x: x[0] <= stop_timestamp, data))
-            print(data)
-            print(stop_timestamp)
 
             timestamps_to_seconds(data_in_range)
             self.db.add(data_in_range)
 
             if verbose:
-                print(f', got {len(data_in_range)}')
+                print(f' got {len(data_in_range)}')

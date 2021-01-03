@@ -114,6 +114,15 @@ def assert_fill(mocker, filler, configuration, start, stop, expected):
     assert expected == filler.db.test_data_add
 
 
+def test_fill_result_not_match_criteria(filler, mocker):
+    assert_fill(mocker, filler, {
+        'fetch_ohlcv.return_value': [
+            [2990000200000, 91, 92, 93, 94, 95],
+            [2990000260000, 91, 92, 93, 94, 95],
+        ]
+    }, 1450000200, 1990000000, [])
+
+
 def test_fill_one_fetch(filler, mocker):
     assert_fill(mocker, filler, {
         'fetch_ohlcv.return_value': [
